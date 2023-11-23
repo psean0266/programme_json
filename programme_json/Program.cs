@@ -1,21 +1,23 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace programme_json
 {
-
+    // deserializer soit par champs ou par constructeur
     class Personne
     {
-       public string nom { get; init; }
-       public  int age { get; init; }
-       public  bool majeur { get; init; }
+       public string nom { get; private set; }
+       public  int age { get; private set; }
+       public  bool majeur { get; private set; }
 
-        //public Personne(string nom, int age, bool majeur) 
-        //{
-        //    this.nom = nom;
-        //    this.age = age;
-        //    this.majeur = majeur;
-        //}
+        public Personne(string nom, int age, bool majeur)
+        {
+            this.nom = nom;
+            this.age = age;
+            this.majeur = majeur;
+        }
 
         public void Afficher()
         {
@@ -26,7 +28,9 @@ namespace programme_json
     {
         static void Main(string[] args)
         {
-            var personne1 = new Personne() { nom = "Toto", age = 20, majeur = true };
+            //  var personne1 = new Personne() { nom = "Toto", age = 20, majeur = true };
+
+            //   var personne1 = new Personne("Toto", 20, true);
 
             /*
             var personne1 = new Personne();
@@ -34,17 +38,47 @@ namespace programme_json
             personne1.age = 20;
             personne1.majeur = true;   
             */
-            personne1.Afficher();
+            //personne1.Afficher();
 
 
-            string json =  JsonConvert.SerializeObject(personne1);
+            //string json =  JsonConvert.SerializeObject(personne1);
+            //Console.WriteLine(json);
+
+            //List<string> noms = new List<string>() { "Jean", "Paul", "Claire" };
+            //string JsonList = JsonConvert.SerializeObject(noms);    
+
+            //Console.WriteLine(JsonList);
+
+            //string JsonTiti =  "{ \"nom\":\"Titi\",\"age\":15,\"majeur\":false}";
+            //Personne titi =  JsonConvert.DeserializeObject<Personne>(JsonTiti);
+            //titi.Afficher();    
+
+            var path = "out";
+
+            var personnes = new List<Personne>()
+            {
+                new Personne("paul",15,false),
+                new Personne("Jean",23,true),
+                new Personne("Karim",17,false),
+                new Personne("Marine",26,true),
+                new Personne("Joseph",26,true),
+            };
+
+            string json =  JsonConvert.SerializeObject(personnes);
             Console.WriteLine(json);
 
-            
+            if(!Directory.Exists(path)) { 
 
-            string JsonTiti =  "{ \"nom\":\"Titi\",\"age\":15,\"majeur\":false}";
-            Personne titi =  JsonConvert.DeserializeObject<Personne>(JsonTiti);
-            titi.Afficher();    
+              Directory.CreateDirectory(path);
+            }
+
+            string fileName = "JsonFileSerialize";
+            string pathEAndFile = Path.Combine(path, fileName);
+
+            File.WriteAllText(pathEAndFile, json);
+            
+           
+
 
         }
     }
