@@ -76,8 +76,17 @@ namespace programme_json
             string pathEAndFile = Path.Combine(path, fileName);
 
             File.WriteAllText(pathEAndFile, json);
-            
-           
+
+            var lire = File.ReadAllText(pathEAndFile);
+
+            List<Personne> PersonneDeserialize =  JsonConvert.DeserializeObject<List<Personne>>(lire);  
+
+            foreach( Personne personne in PersonneDeserialize)
+            {
+                personne.Afficher();
+            }
+
+
 
 
         }
